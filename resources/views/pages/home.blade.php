@@ -1,4 +1,4 @@
-@extends('layouts.pos')
+@extends('layouts.tasks')
 
 @section('title', 'Home')
 

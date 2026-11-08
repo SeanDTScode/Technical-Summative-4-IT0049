@@ -15,7 +15,8 @@ class Task extends Model
     protected function casts(): array
     {
         return [
-            'task_date' => 'date',
+            'task_date'   => 'date',
+            'is_archived' => 'boolean',
         ];
     }
 }

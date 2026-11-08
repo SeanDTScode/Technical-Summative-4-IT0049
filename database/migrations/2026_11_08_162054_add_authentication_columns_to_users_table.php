@@ -8,23 +8,36 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('password')->after('email');
-            $table->timestamp('email_verified_at')->nullable()->after('email');
-            $table->rememberToken();
-            $table->timestamp('updated_at')->nullable();
-        });
+        if (!Schema::hasColumn('users', 'password')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('password')->nullable()->after('email');
+            });
+        }
+
+        if (!Schema::hasColumn('users', 'email_verified_at')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->timestamp('email_verified_at')
+                    ->nullable()
+                    ->after('email');
+            });
+        }
+
+        if (!Schema::hasColumn('users', 'remember_token')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->rememberToken();
+            });
+        }
+
+        if (!Schema::hasColumn('users', 'updated_at')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->timestamp('updated_at')->nullable();
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'password',
-                'email_verified_at',
-                'remember_token',
-                'updated_at',
-            ]);
-        });
+        // Left empty to avoid deleting authentication columns
+        // that already existed before this migration.
     }
 };
